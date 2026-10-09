@@ -9,6 +9,8 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "gdown>=6.4.1",
+    "pandas>=3.0.6",
+    "pyarrow>=26.0.0",
 ]
 
 [project.scripts]
