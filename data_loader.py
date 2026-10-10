@@ -5,6 +5,8 @@ import pandas as pd
 
 import gdown
 
+# Открывает csv-файл и выводит первые 10 строк
+
 
 def show_data(file: str, n: int = 10) -> None:
     print(f"Первые {n} строк датасета")
@@ -13,15 +15,27 @@ def show_data(file: str, n: int = 10) -> None:
         for line in islice(reader, n):
             print(line)
 
+# Читает csv-файл
+
 
 def read_data(file_path: str) -> pd.DataFrame:
     print("Чтение csv файла")
     data = pd.read_csv(file_path)
     return data
 
+# Приводит типы данных
+
 
 def data_types(data: pd.DataFrame) -> pd.DataFrame:
     print("Приведение типа данных")
+
+    data['Has_OMS'] = (data['Has_OMS'] == 'Yes')
+    data['FSR_overlap'] = (data['FSR_overlap'] == 'Y')
+    data['from_CSD'] = (data['from_CSD'] == 'Y')
+    data['public'] = (data['public'] == 'Y')
+    data['CSD_overlap_inCoRE'] = (data['CSD_overlap_inCoRE'] == 'Y')
+    data['CSD_overlap_inCCDC'] = (data['CSD_overlap_inCCDC'] == 'Y')
+
     data = data.astype(
         {
             "filename": "str",
@@ -32,17 +46,17 @@ def data_types(data: pd.DataFrame) -> pd.DataFrame:
             "DOI_public": "str",
             "Note": "str",
 
-            "LCD": "float16",
-            "PLD": "float16",
-            "LFPD": "float16",
-            "cm3_g": "float16",
-            "ASA_m2_cm3": "float16",
-            "ASA_m2_g": "float16",
-            "NASA_m2_cm3": "float16",
-            "NASA_m2_g": "float16",
-            "AV_VF": "float16",
-            "AV_cm3_g": "float16",
-            "NAV_cm3_g": "float16",
+            "LCD": "float32",
+            "PLD": "float32",
+            "LFPD": "float32",
+            "cm3_g": "float32",
+            "ASA_m2_cm3": "float32",
+            "ASA_m2_g": "float32",
+            "NASA_m2_cm3": "float32",
+            "NASA_m2_g": "float32",
+            "AV_VF": "float32",
+            "AV_cm3_g": "float32",
+            "NAV_cm3_g": "float32",
 
             "All_Metals": "category",
             "Matched_CSD_of_CoRE": "category",
@@ -60,6 +74,8 @@ def data_types(data: pd.DataFrame) -> pd.DataFrame:
     )
     return data
 
+# Записывает файл в формат parquet
+
 
 def save_data(data: pd.DataFrame, output_path: str) -> None:
     print("Запись файла в правильный формат")
@@ -76,6 +92,7 @@ if __name__ == "__main__":
 
     show_data(file_name)
 
-    data = read_data(file_name)
-    data = data_types(data)
-    save_data(data, parquet_name)
+    if not os.path.exists(parquet_name) or os.path.getsize(parquet_name) == 0:
+        data = read_data(file_name)
+        data = data_types(data)
+        save_data(data, parquet_name)
