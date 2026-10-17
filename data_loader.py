@@ -83,16 +83,16 @@ def save_data(data: pd.DataFrame, output_path: str) -> None:
 
 
 if __name__ == "__main__":
-    file_id = "1VtPmObnfUbxaKAvi0SEaLBdVvYJSNMHV"
-    file_name = "dataset.csv"
-    parquet_name = "dataset.parquet"
+    FILE_ID = "1VtPmObnfUbxaKAvi0SEaLBdVvYJSNMHV"
+    FILE_NAME = "dataset.csv"
+    PARQUET_NAME = "dataset.parquet"
 
-    if not os.path.exists(file_name) or os.path.getsize(file_name) == 0:
-        gdown.download(id=file_id, output=file_name)
+    if not os.path.exists(FILE_NAME) or os.path.getsize(FILE_NAME) == 0:
+        gdown.download(id=FILE_ID, output=FILE_NAME)
 
-    show_data(file_name)
+    show_data(FILE_NAME)
 
-    if not os.path.exists(parquet_name) or os.path.getsize(parquet_name) == 0:
-        data = read_data(file_name)
+    if not os.path.exists(PARQUET_NAME) or os.path.getsize(PARQUET_NAME) == 0:
+        data = read_data(FILE_NAME)
         data = data_types(data)
-        save_data(data, parquet_name)
+        save_data(data, PARQUET_NAME)

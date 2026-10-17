@@ -220,4 +220,6 @@ dataset.csv
 dataset.parquet
 *.parquet
 *.csv
+data/
+data/images/
 
