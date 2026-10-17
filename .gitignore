@@ -221,5 +221,5 @@ dataset.parquet
 *.parquet
 *.csv
 data/
-data/images/
+
 

@@ -2,27 +2,33 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import httpx
 import wget
+import os
+
 
 URL = "https://labexperts.ru"
 url = f"{URL}/reactives"
-
 IMAGES_DIR = "./data/images/"
 
 
 def load_images(images_urls: pd.Series) -> pd.Series:
+    os.makedirs(IMAGES_DIR, exist_ok=True)
     images_fnames = []
-    indecies = []
+    indices = []
 
     for i, img_url in images_urls.items():
+        if os.path.exists(f"{IMAGES_DIR}{i}.png"):
+            images_fnames.append(f"{IMAGES_DIR}{i}.png")
+            indices.append(i)
+            continue
         try:
             image_fname = wget.download(img_url, f"{IMAGES_DIR}{i}.png")
             if image_fname:
                 images_fnames.append(image_fname)
-                indecies.append(i)
+                indices.append(i)
         except Exception as e:
             print(f"Недоступно для скачивания: {i} - {img_url}: {e}")
 
-    return pd.Series(images_fnames, index=indecies)
+    return pd.Series(images_fnames, index=indices)
 
 
 reactives_list = []
@@ -59,7 +65,7 @@ for i in items:
         if "Каталожный номер:" in p_text:
             catalog_num = p_text.replace("Каталожный номер:", "").strip()
 
-        if "Наличие" in p_text:
+        if "Наличие:" in p_text:
             availability = p_text.replace("Наличие:", "").strip()
 
     if name:
@@ -77,5 +83,5 @@ data = pd.DataFrame(reactives_list)
 
 data["image_fname"] = load_images(data["image_url"])
 
-print(f"\nСкрепинг завершен! Собрано строк: {len(data)}")
+print(f"\nСкрейпинг завершен! Собрано строк: {len(data)}")
 print(data.head(10))
