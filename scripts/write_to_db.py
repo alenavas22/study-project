@@ -16,15 +16,18 @@ def write_to_db():
     db_url = os.getenv("DB_URL")
     db_port = os.getenv("DB_PORT")
     db_root_base = os.getenv("DB_NAME")
-
+    
     df = pd.read_parquet("dataset.parquet")
 
     data_100_rows = df.head(100)
 
     url = URL.create(
-    "postgresql+psycopg2",
-    username=db_user, password=db_password,
-    host=db_url, port=db_port, database=db_root_base,
+        "postgresql+psycopg2",
+        username=db_user, 
+        password=db_password,
+        host=db_url, 
+        port=int(db_port), 
+        database=db_root_base,
     )
 
     engine = create_engine(url, pool_recycle=3600)
