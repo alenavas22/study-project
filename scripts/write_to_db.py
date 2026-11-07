@@ -2,9 +2,14 @@ import os
 import pandas as pd
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
+from sqlalchemy.engine import URL
 
 def write_to_db():
     load_dotenv()
+
+    missing = [k for k in ("DB_USER", "DB_PASSWORD", "DB_URL", "DB_PORT", "DB_NAME") if not os.getenv(k)]
+    if missing:
+        raise RuntimeError(f"Нет переменных в .env: {', '.join(missing)}")
 
     db_user = os.getenv("DB_USER")
     db_password = os.getenv("DB_PASSWORD")
@@ -16,10 +21,13 @@ def write_to_db():
 
     data_100_rows = df.head(100)
 
-    engine = create_engine(
-        f"postgresql+psycopg2://{db_user}:{db_password}@{db_url}:{db_port}/{db_root_base}",
-        pool_recycle=3600,
+    url = URL.create(
+    "postgresql+psycopg2",
+    username=db_user, password=db_password,
+    host=db_url, port=db_port, database=db_root_base,
     )
+
+    engine = create_engine(url, pool_recycle=3600)
 
     table_name = "vasilenkoav"
 
