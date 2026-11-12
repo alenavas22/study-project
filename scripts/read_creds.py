@@ -1,6 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
+
 def read_creds():
     try:
         engine = create_engine("sqlite:///creds.db")
@@ -8,6 +9,7 @@ def read_creds():
         print(df)
     except Exception as e:
         print(f"Ошибка: файл creds.db не найден или поврежден: {e}")
+
 
 if __name__ == "__main__":
     read_creds()

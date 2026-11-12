@@ -15,6 +15,7 @@ def show_data(file: str, n: int = 10) -> None:
         for line in islice(reader, n):
             print(line)
 
+
 # Читает csv-файл
 
 
@@ -23,18 +24,19 @@ def read_data(file_path: str) -> pd.DataFrame:
     data = pd.read_csv(file_path)
     return data
 
+
 # Приводит типы данных
 
 
 def data_types(data: pd.DataFrame) -> pd.DataFrame:
     print("Приведение типа данных")
 
-    data['Has_OMS'] = (data['Has_OMS'] == 'Yes')
-    data['FSR_overlap'] = (data['FSR_overlap'] == 'Y')
-    data['from_CSD'] = (data['from_CSD'] == 'Y')
-    data['public'] = (data['public'] == 'Y')
-    data['CSD_overlap_inCoRE'] = (data['CSD_overlap_inCoRE'] == 'Y')
-    data['CSD_overlap_inCCDC'] = (data['CSD_overlap_inCCDC'] == 'Y')
+    data["Has_OMS"] = data["Has_OMS"] == "Yes"
+    data["FSR_overlap"] = data["FSR_overlap"] == "Y"
+    data["from_CSD"] = data["from_CSD"] == "Y"
+    data["public"] = data["public"] == "Y"
+    data["CSD_overlap_inCoRE"] = data["CSD_overlap_inCoRE"] == "Y"
+    data["CSD_overlap_inCCDC"] = data["CSD_overlap_inCCDC"] == "Y"
 
     data = data.astype(
         {
@@ -45,7 +47,6 @@ def data_types(data: pd.DataFrame) -> pd.DataFrame:
             "date_CSD": "str",
             "DOI_public": "str",
             "Note": "str",
-
             "LCD": "float32",
             "PLD": "float32",
             "LFPD": "float32",
@@ -57,22 +58,20 @@ def data_types(data: pd.DataFrame) -> pd.DataFrame:
             "AV_VF": "float32",
             "AV_cm3_g": "float32",
             "NAV_cm3_g": "float32",
-
             "All_Metals": "category",
             "Matched_CSD_of_CoRE": "category",
             "Possible_List_CSD_of_CoRE": "category",
             "Extension": "category",
-
             "Has_OMS": "bool",
             "FSR_overlap": "bool",
             "from_CSD": "bool",
             "public": "bool",
             "CSD_overlap_inCoRE": "bool",
-            "CSD_overlap_inCCDC": "bool"
-
+            "CSD_overlap_inCCDC": "bool",
         }
     )
     return data
+
 
 # Записывает файл в формат parquet
 
