@@ -4,7 +4,6 @@ import httpx
 import wget
 import os
 
-
 URL = "https://labexperts.ru"
 url = f"{URL}/reactives"
 IMAGES_DIR = "./data/images/"
@@ -75,7 +74,7 @@ for i in items:
                 "catalog_number": catalog_num,
                 "molecular_weight": mol_weight,
                 "availability": availability,
-                "image_url": img_url
+                "image_url": img_url,
             }
         )
 
